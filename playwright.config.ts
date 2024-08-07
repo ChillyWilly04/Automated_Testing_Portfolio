@@ -1,13 +1,13 @@
-import { PlaywrightTestConfig } from '@playwright/test';
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
+  reporter: [['html', { outputFolder: 'playwright-report' }]],
   projects: [
     {
       name: 'chromium',
-      use: { browserName: 'chromium' },
+      use: { ...devices['Desktop Chrome'] },
     },
   ],
-  testDir: './tests',
 };
 
 export default config;
