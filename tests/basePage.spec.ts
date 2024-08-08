@@ -25,6 +25,23 @@ test.describe('Product Tests', () => {
       );
   });
 
+  test('Add product item to compare section', async ({
+    page,
+  }) => {
+    const basePage = new BasePageObject(page);
+
+    await basePage.hoverCategoriesItem();
+    await basePage.clickSubMenuItem();
+    const itemCount = await basePage.clickCompareButtons(4);
+    const countOfCompareProductCard = await basePage.assertCompareIconItemCount();
+    expect(countOfCompareProductCard).toBe(itemCount);
+    await basePage.goToCompareSection();
+    const countOfProductItem = await basePage.getCountOfProductItem();
+    expect(itemCount).toBe(countOfProductItem);
+    await basePage.deleteAllProductCard();
+    await basePage.assertCompareSectionIsEmpty();
+  });
+
 });
 
 
