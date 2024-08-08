@@ -15,6 +15,8 @@ export class BasePageObject extends PageObject {
     private readonly compareSectionEmptyIcon: Locator = this.page.locator('.compare-empty');
     private readonly productItem: Locator = this.page.locator('.compare-table-header-item');
     private readonly labelOfFilterOptionMaker: Locator = this.page.locator('.filter_section').nth(5).locator('.checkbox').first();
+    readonly priceProductCard: Locator = this.page.locator('.product-card').first().locator('.product-card_price_current');
+    private readonly cartButton: Locator = this.page.locator('.product-card').first().locator('button.buy-btn');
 
     async hoverCategoriesItem() {
         await this.categoriesItem.waitFor({ state: 'visible' });
@@ -111,5 +113,10 @@ export class BasePageObject extends PageObject {
         const partialProductName = matchResult ? matchResult[0] : '';
         return partialProductName;
     }
+
+    async addProductItemToCart() {
+        await this.productCard.first().waitFor({ state: 'visible' });
+        await this.cartButton.first().click();
+      }
 
 }
