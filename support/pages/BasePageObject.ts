@@ -117,6 +117,11 @@ export class BasePageObject extends PageObject {
     async addProductItemToCart() {
         await this.productCard.first().waitFor({ state: 'visible' });
         await this.cartButton.first().click();
-      }
+    }
+
+    async assertProductCardIsVisible(){
+        await this.productCard.first().waitFor({ state: 'visible' });
+        await expect(this.productCard.first()).toBeVisible();
+    }
 
 }
