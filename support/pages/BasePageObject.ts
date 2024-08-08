@@ -13,6 +13,7 @@ export class BasePageObject extends PageObject {
     private readonly compareBtn: Locator = this.page.locator('.header_actions_compare');
     private readonly deleteBtn: Locator = this.page.locator('.product-card_remove');
     private readonly compareSectionEmptyIcon: Locator = this.page.locator('.compare-empty');
+    private readonly productItem: Locator = this.page.locator('.compare-table-header-item');
 
     async hoverCategoriesItem() {
         await this.categoriesItem.waitFor({ state: 'visible' });
@@ -20,8 +21,8 @@ export class BasePageObject extends PageObject {
     }
 
     async assertSubMenuIsVisible() {
-        await this.subMenu.waitFor({ state: 'visible' });
-        await expect(this.subMenu).toBeVisible();
+        await this.subMenu.first().waitFor({ state: 'visible' });
+        await expect(this.subMenu.first()).toBeVisible();
     }
 
     async getNameOfSubMenuItem() {
@@ -75,12 +76,12 @@ export class BasePageObject extends PageObject {
     }
 
     async goToCompareSection() {
-        await this.compareBtn.waitFor({ state: 'visible' });
         await this.compareBtn.click();
     }
 
     async getCountOfProductItem() {
-        const countOfProductItem = await this.page.locator('.compare-table-header-item').count();
+        await this.productItem.waitFor({ state: 'visible' });
+        const countOfProductItem = await this.productItem.count();
         return countOfProductItem;
     }
 
