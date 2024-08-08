@@ -19,6 +19,7 @@ export class HomePageObject extends PageObject {
     }
 
     async assertSideMenuIsVisible() {
+        await this.sideMenu.waitFor({ state: 'visible' });
         const isActive = await this.isSideMenuActive();
         expect(isActive).toBe(true);
     }
