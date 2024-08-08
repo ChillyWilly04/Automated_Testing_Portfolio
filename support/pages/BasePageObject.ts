@@ -14,6 +14,7 @@ export class BasePageObject extends PageObject {
     private readonly deleteBtn: Locator = this.page.locator('.product-card_remove');
     private readonly compareSectionEmptyIcon: Locator = this.page.locator('.compare-empty');
     private readonly productItem: Locator = this.page.locator('.compare-table-header-item');
+    private readonly labelOfFilterOptionMaker: Locator = this.page.locator('.filter_section').nth(5).locator('.checkbox').first();
 
     async hoverCategoriesItem() {
         await this.categoriesItem.waitFor({ state: 'visible' });
@@ -95,6 +96,20 @@ export class BasePageObject extends PageObject {
 
     async assertCompareSectionIsEmpty() {
         await expect(this.compareSectionEmptyIcon).toBeVisible();
+    }
+
+    async clickFirstLabelOfFilterOptionMaker() {
+        await this.labelOfFilterOptionMaker.scrollIntoViewIfNeeded();
+        await this.labelOfFilterOptionMaker.click();
+        await this.page.waitForTimeout(3000);
+        await this.productCard.first().waitFor({ state: 'visible' });
+    }
+
+    async getMakerName() {
+        const productName = await this.labelOfFilterOptionMaker.innerText();
+        const matchResult = productName.match(/^[^\s(]+/);
+        const partialProductName = matchResult ? matchResult[0] : '';
+        return partialProductName;
     }
 
 }

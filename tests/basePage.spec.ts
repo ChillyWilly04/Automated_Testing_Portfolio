@@ -42,6 +42,19 @@ test.describe('Product Tests', () => {
     await basePage.assertCompareSectionIsEmpty();
   });
 
+  test('Only those product items are displayed according to the selected filter options', async ({
+    page,
+  }) => {
+    const basePage = new BasePageObject(page);
+
+    await basePage.hoverCategoriesItem();
+    await basePage.clickSubMenuItem();
+    await basePage.clickFirstLabelOfFilterOptionMaker();
+    await basePage.assertAllProductCardContainPartialName(
+      await basePage.getMakerName()
+      );
+  });
+
 });
 
 
