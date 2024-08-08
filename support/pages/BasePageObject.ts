@@ -9,6 +9,11 @@ export class BasePageObject extends PageObject {
     private readonly productCard: Locator = this.page.locator('.product-card_image');
     readonly productName: Locator = this.page.locator('.product-card_title');
     private readonly searchField: Locator = this.page.locator('#search-input');
+    private readonly compareBtnOfProductCard: Locator = this.page.locator('.product-card_compare-btn');
+    private readonly compareBtn: Locator = this.page.locator('.header_actions_compare');
+    private readonly deleteBtn: Locator = this.page.locator('.product-card_remove');
+    private readonly compareSectionEmptyIcon: Locator = this.page.locator('.compare-empty');
+    private readonly productItem: Locator = this.page.locator('.compare-table-header-item');
 
     async hoverCategoriesItem() {
         await this.categoriesItem.waitFor({ state: 'visible' });
@@ -16,7 +21,8 @@ export class BasePageObject extends PageObject {
     }
 
     async assertSubMenuIsVisible() {
-        await expect(this.subMenu).toBeVisible();
+        await this.subMenu.first().waitFor({ state: 'visible' });
+        await expect(this.subMenu.first()).toBeVisible();
     }
 
     async getNameOfSubMenuItem() {
@@ -54,6 +60,41 @@ export class BasePageObject extends PageObject {
         productNames.forEach(name => {
           expect(name).toContain(partialProductName);
           });
-      }
+    }
+
+    async clickCompareButtons(count) {
+        for (let i = 0; i < count; i++) {
+            await this.compareBtnOfProductCard.nth(i).click();
+        }
+        return count;
+    }
+
+    async assertCompareIconItemCount() {
+        const itemCountText = await this.page.locator('.header_actions_item_count').innerText();
+        const itemCount = parseInt(itemCountText, 10);
+        return itemCount;
+    }
+
+    async goToCompareSection() {
+        await this.compareBtn.click();
+    }
+
+    async getCountOfProductItem() {
+        await this.productItem.first().waitFor({ state: 'visible' });
+        const countOfProductItem = await this.productItem.count();
+        return countOfProductItem;
+    }
+
+    async deleteAllProductCard() {
+        const productCardCount = await this.productCard.count();
+    
+        for (let i = 0; i < productCardCount; i++) {
+            await this.deleteBtn.first().click();
+        }
+    }
+
+    async assertCompareSectionIsEmpty() {
+        await expect(this.compareSectionEmptyIcon).toBeVisible();
+    }
 
 }
