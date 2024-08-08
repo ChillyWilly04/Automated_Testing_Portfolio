@@ -80,7 +80,7 @@ export class BasePageObject extends PageObject {
     }
 
     async getCountOfProductItem() {
-        await this.productItem.waitFor({ state: 'visible' });
+        await this.productItem.first().waitFor({ state: 'visible' });
         const countOfProductItem = await this.productItem.count();
         return countOfProductItem;
     }
