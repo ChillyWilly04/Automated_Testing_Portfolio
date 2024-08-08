@@ -15,3 +15,15 @@ test('Side menu is visible', async ({
       await homePage.assertSideMenuIsVisible();
       
   });
+
+  test('Cart is empty by default', async ({
+    page,
+  }) => {
+    const homePage = new HomePageObject(page);
+  
+      await homePage.clickCartButton();
+      await homePage.assertCartModalWindowIsVisible();
+      await homePage.assertCartIsEmpty();
+      await homePage.clickCloseButton();
+      await homePage.assertCartModalWindowIsHidden();
+  });
