@@ -20,6 +20,7 @@ export class BasePageObject extends PageObject {
     }
 
     async assertSubMenuIsVisible() {
+        await this.subMenu.waitFor({ state: 'visible' });
         await expect(this.subMenu).toBeVisible();
     }
 
@@ -74,6 +75,7 @@ export class BasePageObject extends PageObject {
     }
 
     async goToCompareSection() {
+        await this.compareBtn.waitFor({ state: 'visible' });
         await this.compareBtn.click();
     }
 
