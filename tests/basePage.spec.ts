@@ -94,6 +94,18 @@ test.describe('Product Tests', () => {
     await homePage.assertCartIsEmpty();
   });
 
+  test('Fetch Product Card by Id', async ({
+    page,
+  }) => {
+    const basePage = new BasePageObject(page);
+
+    await basePage.hoverCategoriesItem();
+    await basePage.clickSubMenuItem();
+    await basePage.assertProductCardIsVisible();
+    const statusCode = await basePage.getLookupResponse();
+    expect(statusCode).toBe(200);
+  });
+
 });
 
 

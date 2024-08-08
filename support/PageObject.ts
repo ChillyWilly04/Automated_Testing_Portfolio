@@ -18,8 +18,15 @@ export class PageObject {
         const priceText = await productPrice.first().innerText();
         const priceMatch = priceText.match(/\d+([,.\s]?\d+)*(\.\d+)?/);
         const numericPrice = parseFloat((priceMatch ? priceMatch[0] : "")
-          .replace(/[^\d.-]/g, ''));
+            .replace(/[^\d.-]/g, ''));
         return numericPrice;
-      }
+    }
+
+    async getLookupResponse() {
+        const url = `${environment.bodTest}${environment.productCard}`;
+        const response = await this.page.request.post(url);
+        const statusCode = response.status();
+        return statusCode;
+    }
     
 }
