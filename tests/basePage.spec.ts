@@ -74,6 +74,26 @@ test.describe('Product Tests', () => {
     expect(cartProductPrice).toBe(productPrice);
   });
 
+  test('Add a promo code to the cart', async ({
+    page,
+  }) => {
+    const basePage = new BasePageObject(page);
+    const cartPage = new CartPageObject(page);
+    const homePage = new HomePageObject(page);
+    
+    await basePage.hoverCategoriesItem();
+    await basePage.clickSubMenuItem();
+    await basePage.addProductItemToCart();
+    await cartPage.assertCartSectionIsVisible();
+    await cartPage.fillPromoCode();
+    await cartPage.assertErrorMessageIsVisible();
+    await cartPage.confirmBtnIsDisabled();
+    await cartPage.clickRemoveBtn();
+    await homePage.clickCartButton();
+    await homePage.assertCartModalWindowIsVisible();
+    await homePage.assertCartIsEmpty();
+  });
+
 });
 
 

@@ -5,7 +5,7 @@ export class HomePageObject extends PageObject {
     readonly catalogButton: Locator = this.page.locator('.header_catalog_btn');
     private readonly sideMenu: Locator = this.page.locator('.menu_wrapper');
     private readonly cartButton: Locator = this.page.locator('.header_actions').filter({ hasText: 'Кошик' });
-    private readonly cartModalWindow: Locator = this.page.locator('.modal__container');
+    readonly cartModalWindow: Locator = this.page.locator('.modal__container');
     private readonly iconEmptyCart: Locator = this.page.getByAltText('Ваш кошик порожній');
     private readonly closeCartModalWindow: Locator = this.page.locator('.modal__close');
     
