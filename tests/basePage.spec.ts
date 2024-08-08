@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { BasePageObject, HomePageObject } from '../support/pages';
+import { BasePageObject, CartPageObject, HomePageObject } from '../support/pages';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('https://www.moyo.ua/ua/');
@@ -53,6 +53,25 @@ test.describe('Product Tests', () => {
     await basePage.assertAllProductCardContainPartialName(
       await basePage.getMakerName()
       );
+  });
+
+  test('Add product item to the cart', async ({
+    page,
+  }) => {
+    const basePage = new BasePageObject(page);
+    const cartPage = new CartPageObject(page);
+
+    await basePage.hoverCategoriesItem();
+    await basePage.clickSubMenuItem();
+    const productName = await basePage.getProductName(basePage.productName);
+    const productPrice = await basePage.getProductPrice(basePage.priceProductCard);
+    await basePage.addProductItemToCart();
+    await cartPage.assertCartSectionIsVisible();
+    const cartProductName = await cartPage.getProductName(cartPage.productName);
+    expect(cartProductName).toBe(productName);
+
+    const cartProductPrice = await basePage.getProductPrice(cartPage.productPrice);
+    expect(cartProductPrice).toBe(productPrice);
   });
 
 });
