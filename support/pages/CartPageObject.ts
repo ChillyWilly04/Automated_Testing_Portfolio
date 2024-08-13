@@ -9,6 +9,10 @@ export class CartPageObject extends PageObject {
     private readonly promoCodeField = this.page.locator('input[name="promocode"]');
     private readonly confirmBtn = this.page.getByRole('button', { name: 'Оформити замовлення' });
     private readonly removeBtn = this.page.locator('.cart-items-list .remove');
+    private readonly increaseQuantity: Locator = this.page.locator('.cart-items-list-item').first().locator('.qty-btn.plus');
+    private readonly totalPrice: Locator = this.page.locator('.cart-items-list-item').first().locator('.price-total-bonuses .value');
+    private readonly currentQuantity: Locator = this.page.locator('.qty-price-block').first().locator('.qty-value');
+    
   
     async assertCartSectionIsVisible() {
         await this.cartSection.waitFor({ state: 'visible' });
@@ -35,5 +39,24 @@ export class CartPageObject extends PageObject {
 
     async clickRemoveBtn() {
         await this.removeBtn.click();
+    }
+
+    async updateProductQuantity() {
+        //Two consecutive clicks on the increment button are used because the dblclick() method did not cause the desired response
+        await this.increaseQuantity.click();
+        await this.page.waitForTimeout(100);
+        await this.increaseQuantity.click();
+    }
+
+    async getTotalPrice(){
+        const priceText = await this.totalPrice.innerText();
+        const priceNumber = parseFloat(priceText.replace(/[^0-9.-]+/g,""));
+        return priceNumber;
+    }
+
+    async getCurrentQuantity(){
+        const quantityText = await this.currentQuantity.innerText();
+        const quantityNumber = parseInt(quantityText.replace(/[^0-9]/g,""), 10);
+        return quantityNumber;
     }
 }
