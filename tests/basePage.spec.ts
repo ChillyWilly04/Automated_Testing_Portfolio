@@ -94,7 +94,7 @@ test.describe('Product Tests', () => {
     await homePage.assertCartIsEmpty();
   });
 
-  test('Fetch Product Card by Id', async ({
+  test('Verify product card visibility and fetch status', async ({
     page,
   }) => {
     const basePage = new BasePageObject(page);
@@ -104,6 +104,24 @@ test.describe('Product Tests', () => {
     await basePage.assertProductCardIsVisible();
     const statusCode = await basePage.getLookupResponse();
     expect(statusCode).toBe(200);
+  });
+  
+  test('Update product quantity in the cart', async ({ page }) => {
+    const basePage = new BasePageObject(page);
+    const cartPage = new CartPageObject(page);
+  
+    await basePage.hoverCategoriesItem();
+    await basePage.clickSubMenuItem();
+    const productPrice = await basePage.getProductPrice(basePage.priceProductCard);
+    await basePage.addProductItemToCart();
+  
+    await cartPage.assertCartSectionIsVisible();
+    await cartPage.updateProductQuantity();
+
+    const currentQuantity = await cartPage.getCurrentQuantity();
+    const updatedProductPrice = await cartPage.getTotalPrice();
+  
+    expect(updatedProductPrice).toBe(productPrice * currentQuantity);
   });
 
 });

@@ -124,4 +124,6 @@ export class BasePageObject extends PageObject {
         await expect(this.productCard.first()).toBeVisible();
     }
 
+   
+
 }
