@@ -15,8 +15,10 @@ export class BasePageObject extends PageObject {
     private readonly compareSectionEmptyIcon: Locator = this.page.locator('.compare-empty');
     private readonly productItem: Locator = this.page.locator('.compare-table-header-item');
     private readonly labelOfFilterOptionMaker: Locator = this.page.locator('.filter_section').nth(5).locator('.checkbox').first();
-    readonly priceProductCard: Locator = this.page.locator('.product-card').first().locator('.product-card_price_current');
+    readonly priceProductCard: Locator = this.page.locator('.product-card .product-card_price_current');
     private readonly cartButton: Locator = this.page.locator('.product-card').first().locator('button.buy-btn');
+    private readonly minPriceInput: Locator = this.page.locator('input[name="min"]');
+    private readonly maxPriceInput: Locator = this.page.locator('input[name="max"]');
 
     async hoverCategoriesItem() {
         await this.categoriesItem.waitFor({ state: 'visible' });
@@ -124,6 +126,29 @@ export class BasePageObject extends PageObject {
         await expect(this.productCard.first()).toBeVisible();
     }
 
-   
+    async applyPriceRangeFilter(minPrice: number, maxPrice: number) {
+        await this.minPriceInput.fill(minPrice.toString());
+        await this.maxPriceInput.fill(maxPrice.toString());
+    }
+
+    async assertAllFiltersAreApplied() {
+        await this.page.waitForTimeout(3000);
+        await this.page.locator('.bold_text').first().waitFor({ state: 'visible' });
+    }
+
+    async assertAllProductsWithinPriceRange(minPrice: number, maxPrice: number) {
+        const productCount = await this.priceProductCard.count();
+
+        for (let i = 0; i < productCount; i++) {
+            const priceText = await this.priceProductCard.nth(i).innerText();
+            const cleanedPriceText = priceText.replace(/[\s\u00A0\u202F\u2007]+/g, '').replace(/[^0-9,.]+/g, '');
+            const normalizedPriceText = cleanedPriceText.replace(',', '.');
+
+            const priceNumber = parseFloat(normalizedPriceText);
+            
+            expect(priceNumber).toBeGreaterThanOrEqual(minPrice);
+            expect(priceNumber).toBeLessThanOrEqual(maxPrice);
+        }
+    }
 
 }
