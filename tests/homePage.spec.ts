@@ -1,10 +1,5 @@
-import { test } from '@playwright/test';
+import { test } from '../support/fixtures';
 import { HomePageObject } from '../support/pages';
-
-test.beforeEach(async ({ page }) => {
-  await page.goto('https://www.moyo.ua/ua/');
-});
-
 
 test('Side menu is visible', async ({
     page,
