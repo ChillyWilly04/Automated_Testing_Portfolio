@@ -1,9 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../support/fixtures';
 import { BasePageObject, CartPageObject, HomePageObject } from '../support/pages';
-
-test.beforeEach(async ({ page }) => {
-  await page.goto('https://www.moyo.ua/ua/');
-});
 
 test.describe('Product Tests', () => {
   test('The name of the product card contains the partial name', async ({
