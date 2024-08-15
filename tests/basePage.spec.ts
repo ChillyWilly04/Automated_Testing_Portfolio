@@ -124,6 +124,16 @@ test.describe('Product Tests', () => {
     expect(updatedProductPrice).toBe(productPrice * currentQuantity);
   });
 
+  test('Only products within selected price range are displayed', async ({ page }) => {
+    const basePage = new BasePageObject(page);
+  
+    await basePage.hoverCategoriesItem();
+    await basePage.clickSubMenuItem();
+    await basePage.applyPriceRangeFilter(70000, 90000);
+    await basePage.assertAllFiltersAreApplied();
+    await basePage.assertAllProductsWithinPriceRange(70000, 90000);
+  });
+
 });
 
 
