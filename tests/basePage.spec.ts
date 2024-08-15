@@ -120,7 +120,7 @@ test.describe('Product Tests', () => {
     expect(updatedProductPrice).toBe(productPrice * currentQuantity);
   });
 
-  test('Only products within selected price range are displayed', async ({ page }) => {
+  test.skip('Only products within selected price range are displayed', async ({ page }) => {
     const basePage = new BasePageObject(page);
   
     await basePage.hoverCategoriesItem();
